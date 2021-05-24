@@ -26,7 +26,7 @@ myApp.controller('app_Ctrl', async function ($scope, $http, $scope, $cookies, $w
         $scope.username = $scope.users[$cookies.get('id')].name;
     }
 
-    //get all posts and comments
+    //get all posts
     $scope.posts = {};
     await $http.get('http://district-buddy.herokuapp.com/get/posts')
         .then(function (res) {
@@ -102,7 +102,7 @@ myApp.controller('app_Ctrl', async function ($scope, $http, $scope, $cookies, $w
                     if (res.data) {
                         res.data.forEach(element => {
                             var date = new Date(element.timestamp);
-                            comments[element.id] = { id: element.id, poster_id: element.poster_id, poster_name: $scope.users[element.poster_id].name, timestamp: date.toLocaleString('en-us'), content: element.content };
+                            comments[element.id] = { id: element.id, post_id: element.post_id, poster_id: element.poster_id, poster_name: $scope.users[element.poster_id].name, timestamp: date.toLocaleString('en-us'), content: element.content };
                         })
                     } else {
                         console.log(res);
@@ -223,26 +223,49 @@ myApp.controller('app_Ctrl', async function ($scope, $http, $scope, $cookies, $w
             $window.alert('Content is too short!(3-1024)\n');
         } else {
             var token = $cookies.get('token');
-            var url = 'http://district-buddy.herokuapp.com/new';
+            var url = 'http://district-buddy.herokuapp.com/';
             var data = { token: token, content: content };
+            var method;
             if ($scope.newPost) {
-                url += 'post';
+                url += 'newpost';
                 data['district_id'] = $scope.currentDistrict.id;
-            } else {
-                url += 'comment';
+                method = 'post';
+            } else if ($scope.newComment) {
+                url += 'newcomment';
                 data['post_id'] = $scope.currentPost.id;
+                method = 'post';
+            } else if ($scope.editPost) {
+                url += 'editpost';
+                data['post_id'] = $scope.editPost;
+                method = 'put';
+            } else {
+                url += 'editcomment';
+                data['comment_id'] = $scope.editComment;
+                method = 'put';
             }
-            $http.post(url, $.param(data), { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+            $http({
+                method: method,
+                url: url,
+                data: $.param(data),
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
                 .then(
                     function success(res) {
                         if ($scope.newPost) {
                             $window.alert('Post created!');
                             $scope.selectDistrict($scope.currentDistrict.id);
-                        } else {
+                        } else if ($scope.newComment) {
                             $window.alert('Comment created!');
                             $scope.selectPost($scope.currentPost.id);
+                        } else if ($scope.editPost) {
+                            $window.alert('Post edited!');
+                            $scope.selectDistrict($scope.currentDistrict.id);
+                            $scope.selectPost($scope.editPost);
+                        } else {
+                            $window.alert('Comment edited!');
+                            $scope.selectPost($scope.comments[$scope.editComment].post_id);
                         }
-                        $scope.newContent = $scope.newPost = $scope.newComment = false;
+                        $scope.newContent = $scope.newPost = $scope.newComment = $scope.editPost = $scope.editComment = false;
                     },
                     function error(res) {
                         if (res.status == 401) {
@@ -262,9 +285,11 @@ myApp.controller('app_Ctrl', async function ($scope, $http, $scope, $cookies, $w
             if (type == 'post') {
                 $scope.newContent = true;
                 $scope.editPost = id;
+                $scope.content = $scope.posts[id].content;
             } else {
                 $scope.newContent = true;
                 $scope.editComment = id;
+                $scope.content = $scope.comments[id].content;
             }
         } else {
             $window.alert('You can\'t edit this ' + type + ' because you are not the poster!');
