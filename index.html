@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-sanitize.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-cookies.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.js"></script>
+
+<script src="js/main.js"></script>
+<link rel="stylesheet" href="css/style.css">
+
+<body ng-app="myApp" ng-controller="app_Ctrl">
+    <div id="sidemenubody" class="box">
+        <div id=sidemenu_user>
+            <img id="sidemenu_usericon" src="img/noicon.png">
+            <div class="sidemenu_btn" ng-click="showLogin = true" ng-hide="loggedin">Login</div>
+            <div class="sidemenu_btn" ng-click="logout()" ng-show="loggedin">Logout</div>
+            <div id="sidemenu_username">{{username}}</div>
+        </div>
+        <div id="sidemenu_list">
+            <div class="sidemenu_district box" ng-click="selectDistrict(0)">
+                All Posts
+            </div>
+            <div class="sidemenu_area box" ng-repeat="area in areas">
+                {{area.name}}
+                <div class="sidemenu_district box" ng-repeat="district in area.districts"
+                    ng-click="selectDistrict(district.id)">
+                    {{district.name}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="main">
+        <div id="postslistbody" class="box">
+            <div class="topbar">
+                <div class="sidemenu_btn" ng-click="newPostBtn()">New Post</div>
+                <div class="topbar-title">{{currentDistrict.name}}</div>
+            </div>
+            <div id="postlist">
+                <div class="postbar box" ng-repeat="post in posts" ng-click="selectPost(post.id)">
+                    <div class="small_btn" ng-click="$event.stopPropagation();delContent('post', post.id)" ng-show="loggedin">Del</div>
+                    <div class="small_btn" ng-click="$event.stopPropagation();editContent('post', post.id)" ng-show="loggedin">Edit</div>
+                    <div class="poster-postbar">{{post.poster_name}}</div>
+                    <div class="time-postbar">{{post.timestamp}}</div>
+                    <div class="title">{{post.content}}</div>
+                </div>
+            </div>
+        </div>
+        <div id="postbody" class="box">
+            <div class="topbar">
+                <div class="sidemenu_btn" ng-click="newCommentBtn()">New Comment</div>
+            </div>
+            <div class="post_comments box">
+                <div class="poster-postbar">{{currentPost.poster_name}}</div>
+                <div class="time-postbar">{{currentPost.timestamp}}</div>
+                <div class="content">{{currentPost.content}}</div>
+            </div>
+            <div class="post_comments box" ng-repeat="comment in comments">
+                <div class="small_btn" ng-click="$event.stopPropagation();delContent('comment', comment.id)" ng-show="loggedin">Del</div>
+                <div class="small_btn" ng-click="$event.stopPropagation();editContent('comment', comment.id)" ng-show="loggedin">Edit</div>
+                <div class="poster-postbar">{{comment.poster_name}}</div>
+                <div class="time-postbar">{{comment.timestamp}}</div>
+                <div class="content">{{comment.content}}</div>
+            </div>
+        </div>
+    </div>
+
+    <center id="loginbody" class="windowbody" ng-show="showLogin" ng-click="showLogin = false">
+        <div id="login_window" class="window box" ng-click="$event.stopPropagation()" ng-hide="registering"><br />
+            <div class="window_title">Login</div>
+            <input type="text" placeholder="Phone Number" ng-model="phone" /><br />
+            <input type="password" placeholder="Password" ng-model="pwd" /><br />
+            <input type="button" value="Login" ng-click="login(phone, pwd)" />
+            <br />
+            <br /><a>No account? </a><input type="button" value="Register Here"
+                ng-click="registering = !registering"><br /><br />
+        </div>
+        <div id="reg_window" class="window box" ng-click="$event.stopPropagation()" ng-show="registering"><br />
+            <div class="window_title">Register</div>
+            <input type="text" placeholder="Username" ng-model="name" /><br />
+            <input type="text" placeholder="Phone Number" ng-model="phone" /><br />
+            <input type="password" placeholder="Password" ng-model="pwd1" /><br />
+            <input type="password" placeholder="Password again" ng-model="pwd2" /><br />
+            <input type="button" value="Register" ng-click="register(name, phone, pwd1, pwd2)" />
+            <br />
+            <br /><a>Got a account? </a><input type="button" value="Login Here"
+                ng-click="registering = !registering"><br /><br />
+        </div>
+    </center>
+
+    <center id="newContentbody" class="windowbody" ng-show="newContent"
+        ng-click="newContent = newPost = newComment = editPost = editComment = false">
+        <div id="newContent_window" class="window box" ng-click="$event.stopPropagation()"><br />
+            <div class="window_title" ng-show="newPost">New Post</div>
+            <div class="window_title" ng-show="newComment">New Comment</div>
+            <div class="window_title" ng-show="editPost">Edit Post</div>
+            <div class="window_title" ng-show="editComment">Edit Comment</div>
+            <textarea placeholder="Type here..." rows=10 cols=100 ng-model="content"></textarea><br />
+            <input type="button" value="Submit" ng-click="submit(content)" /><br />
+        </div>
+    </center>
+
+</body>
+
+</html>

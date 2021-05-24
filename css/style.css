@@ -1,0 +1,170 @@
+body {
+    margin: 0px;
+    background-color: darkgray;
+}
+
+#main {
+    height: 100vh;
+    width: 70vw;
+    margin: auto;
+}
+
+.box {
+    background-color: white;
+    box-sizing: border-box;
+    border: 2px solid gray;
+}
+
+.topbar {
+    background-color: white;
+    height: 5%;
+    border-bottom: 2px solid gray;
+}
+
+.topbar h1 {
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+.title {
+    font-size: 3vh;
+    overflow: hidden;
+    height: 10vh;
+}
+
+.window_title {
+    font-size: 3vh;
+    overflow: hidden;
+}
+
+.topbar-title {
+    font-size: 2.3vh;
+    text-align: center;
+}
+
+#postslistbody {
+    float: left;
+    height: 100vh;
+    width: 30%;
+    background-color: lightgray;
+    overflow: scroll;
+}
+
+#postbody {
+    float: right;
+    height: 100vh;
+    width: 70%;
+    background-color: lightgray;
+}
+
+.postbar {
+    height: 10%;
+    cursor: pointer;
+}
+
+.postbar:hover {
+    color: white;
+    background-color: gray;
+}
+
+#sidemenubody {
+    margin: auto;
+    position: fixed;
+    height: 100vh;
+    width: 15vw;
+    background-color: lightgray;
+}
+
+#sidemenu_user {
+    height: 10%;
+    position: relative;
+}
+
+#sidemenu_usericon {
+    width: 20%;
+    margin: 1vh;
+}
+
+.sidemenu_btn {
+    float: right;
+    background-color: #879000;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+}
+
+.sidemenu_btn:hover {
+    background-color: #666519;
+}
+
+#sidemenu_username {}
+
+.sidemenu_district {
+    cursor: pointer;
+}
+
+.sidemenu_district:hover {
+    color: white;
+    background-color: gray;
+}
+
+.windowbody {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    width: 100vw;
+    margin: auto;
+    background: #0008;
+}
+
+.window {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    height: 50vh;
+    width: 50vh;
+    margin: auto;
+    background: white;
+    transform: translate(-50%, -50%);
+}
+
+.window div {
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+.window input {
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+
+#newContent_window textarea {
+    resize: none;
+    width: 90%;
+    height: 50%;
+}
+
+.content {
+    overflow-wrap: anywhere;
+}
+
+.small_btn {
+    float: right;
+    background-color: #b46f00;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+}
+
+.small_btn:hover {
+    padding: 5px 10px;
+    background-color: #664519;
+}
