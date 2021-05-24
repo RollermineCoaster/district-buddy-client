@@ -102,7 +102,9 @@ body {
     background-color: #666519;
 }
 
-#sidemenu_username {}
+#sidemenu_username {
+    font-size: 2vh;
+}
 
 .sidemenu_district {
     cursor: pointer;
